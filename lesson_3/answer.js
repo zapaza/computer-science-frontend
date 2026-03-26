@@ -1,4 +1,4 @@
-class BSD {
+class BCD {
     digits;
     length;
 
@@ -112,5 +112,5 @@ class BSD {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { BSD };
+    module.exports = { BSD: BCD };
 }
