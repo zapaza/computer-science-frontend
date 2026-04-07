@@ -1,0 +1,1 @@
+## Решение было сделано еще в первом уроке [тут](https://github.com/zapaza/computer-science-frontend/blob/main/lesson_1/answer.js)
