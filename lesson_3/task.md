@@ -4,11 +4,13 @@
 Для хранения байт следует использовать Uint8Array, где в одном байте нужно хранить одну цифру (со звездочкой (*) в одном байте 2 цифры).
 
 ```typescript
+// Абстрактный класс для примера
 abstract class BCD {
+    // Можно усложнить и сделать поддержку number | bigint
     constructor(num: number) { /* ... */ }
   
     abstract toBigint(): bigint;
-    abstract toNumber(): bigint;
+    abstract toNumber(): number;
     abstract toString(): string;
 
     // Возвращает значение разряда BCD числа на указанной позиции.
@@ -16,9 +18,9 @@ abstract class BCD {
     abstract at(index: number): number;
 }
 
-const n = new BCD(65536n);
+const n = new BCD(65536);
 
-console.log(n.toBigint()); // 415030n
+console.log(n.toBigint()); // 65536n
 console.log(n.toNumber()); // 65536
 
 console.log(n.at(0)); // 6

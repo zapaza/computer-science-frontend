@@ -5,20 +5,22 @@ class BCD {
     constructor(num) {
         this.#validate(num);
 
-        const decimalString = num.toString();
+        const digits = [];
+        let n = BigInt(num);
 
-        this.length = decimalString.length;
-        this.digits = new Uint8Array(this.length);
-
-        // Преобразование строки в массив цифр
-        for (let index = 0; index < this.length; index++) {
-            const char = decimalString[index];
-            const charCode = char.charCodeAt(0);
-            // Получаем числовое значение символа (ASCII '0' = 48)
-            const digit = charCode - 48;
-
-            this.digits[index] = digit;
+        if (n === 0n) {
+            digits.push(0);
+        } else {
+            while (n > 0n) {
+                const digit = Number(n % 10n);
+                digits.push(digit);
+                n = n / 10n;
+            }
+            digits.reverse();
         }
+
+        this.length = digits.length;
+        this.digits = new Uint8Array(digits);
     }
 
     #validate(num) {
@@ -55,28 +57,26 @@ class BCD {
         let result = 0n;
 
         for (let index = 0; index < this.length; index++) {
-            const currentDigit = this.digits[index];
-            const currentDigitAsBigInt = BigInt(currentDigit);
+            const currentDigit = BigInt(this.digits[index]);
 
-            // Сдвиг влево на 4 бита для следующей цифры
-            const shiftedResult = result << 4n;
-            // Установка текущей цифры в младшие 4 бита
-            result = shiftedResult | currentDigitAsBigInt;
+            // Умножение на 10 для следующей цифры
+            result = result * 10n + currentDigit;
         }
 
         return result;
     }
 
     toNumber() {
-        const decimalString = this.toString();
-        const numericValue = Number(decimalString);
+        const bigValue = this.toBigint();
+        const numValue = Number(bigValue);
 
-        const isSafeInteger = Number.isSafeInteger(numericValue);
-        if (!isSafeInteger) {
-            throw new RangeError('Число выходит за пределы безопасного диапазона number');
+        if (!Number.isSafeInteger(numValue)) {
+            throw new RangeError(
+                'Число выходит за пределы безопасного диапазона number'
+            );
         }
 
-        return numericValue;
+        return numValue;
     }
 
     toString() {
@@ -112,5 +112,5 @@ class BCD {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { BSD: BCD };
+    module.exports = { BCD };
 }

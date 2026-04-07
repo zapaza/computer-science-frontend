@@ -58,13 +58,12 @@ function runTests() {
     assert(new BCD(42).toNumber() === 42, 'toNumber() возвращает исходное число');
     assertThrows(() => new BCD(2n**53n).toNumber(), RangeError, 'безопасного диапазона', 'toNumber() выбрасывает ошибку для небезопасных целых');
 
-    // --- Тест toBigint (BCD packing) ---
-    console.log('\n--- Тест метода toBigint() (BCD упаковка) ---');
-    // 123 -> (1 << 8) | (2 << 4) | 3 = 0x123
+    // --- Тест toBigint ---
+    console.log('\n--- Тест метода toBigint() ---');
     const BCD3 = new BCD(123);
-    const packed = BCD3.toBigint();
-    assert(packed === 0x123n, 'toBigint() упаковывает цифры в нибблы (123 -> 0x123)');
-    assert(new BCD(4567).toBigint() === 0x4567n, 'toBigint() корректно упаковывает 4567');
+    const result = BCD3.toBigint();
+    assert(result === 123n, 'toBigint() возвращает BigInt значение числа (123 -> 123n)');
+    assert(new BCD(4567).toBigint() === 4567n, 'toBigint() корректно возвращает BigInt для 4567');
 
     // --- Тест at() ---
     console.log('\n--- Тест метода at() ---');
